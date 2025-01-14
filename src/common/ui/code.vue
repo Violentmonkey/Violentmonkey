@@ -68,6 +68,8 @@ import 'codemirror/addon/search/match-highlighter';
 import 'codemirror/addon/search/searchcursor';
 import 'codemirror/addon/selection/active-line';
 import 'codemirror/keymap/sublime';
+import 'codemirror/keymap/vim';
+import 'codemirror/keymap/emacs';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/javascript-hint';
@@ -488,10 +490,12 @@ watch(() => props.value, updateValue);
 onMounted(() => {
   let userOpts = options.get('editor');
   const theme = options.get('editorThemeName');
+  const keyMap = options.get('editorKeyMap');
   const internalOpts = props.cmOptions || {};
   const opts = {
     ...cmDefaults,
     ...userOpts,
+    ...{ keyMap: keyMap },
     ...theme && { theme },
     ...internalOpts, // internal options passed via `props` have the highest priority
     mode: props.mode || cmDefaults.mode,
