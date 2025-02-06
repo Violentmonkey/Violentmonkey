@@ -482,6 +482,9 @@ labelInstall:
 labelKeepOriginal:
   description: Option to keep the original match or ignore rules.
   message: Keep original
+labelKeyMap:
+  description: Option to change the editor keymap.
+  message: 'Keymap: '
 labelLastUpdatedAt:
   description: Label shown on last updated time.
   message: Last updated at $1

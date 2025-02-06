@@ -11,6 +11,14 @@
       <a :href="ghURL" target="_blank">&nearr;</a>
       <p v-text="error"/>
     </div>
+    <div class="mb-1 mr-1c flex center-items">
+      <span v-text="i18n('labelKeyMap')"/>
+      <select v-model="keyMap" :disabled="busy" :title="keyMap">
+        <option value="sublime" v-text="i18n('labelRunAtDefault')"/>
+        <option value="vim" v-text="'vim'"/>
+        <option value="emacs" v-text="'emacs'"/>
+      </select>
+    </div>
     <p class="my-1" v-html="i18n('descEditorOptions')"/>
     <setting-text name="editor" json has-reset @dblclick="toggleBoolean">
       <a class="ml-1" tabindex="0" @click="info = !info">
@@ -32,6 +40,7 @@
 <script>
 const keyThemeCSS = 'editorTheme';
 const keyThemeNAME = 'editorThemeName';
+const keyEditorKeyMap = 'editorKeyMap';
 const THEMES = process.env.CODEMIRROR_THEMES;
 const gh = 'github.com';
 const ghREPO = 'codemirror/CodeMirror';
@@ -72,6 +81,7 @@ const busy = ref();
 const error = ref();
 const themeCss = ref();
 const theme = ref();
+const keyMap = ref();
 
 onMounted(async () => {
   await options.ready; // Waiting for hookSetting to set the value before watching for changes
@@ -96,6 +106,12 @@ onMounted(async () => {
   });
   hookSetting(keyThemeCSS, val => {
     themeCss.value = makeTextPreview(val);
+  });
+  watch(keyMap, val => {
+    options.set(keyEditorKeyMap, val);
+  });
+  hookSetting(keyEditorKeyMap, val => {
+    keyMap.value = val;
   });
 });
 
@@ -131,6 +147,7 @@ async function toggleStateHint(curValue) {
     Object.entries({
       ...(await import('codemirror')).default.defaults,
       ...cmDefaults,
+      ...options.get('editorKeyMap'),
       ...options.get('editor'),
     })
     // sort by keys alphabetically to make it more readable

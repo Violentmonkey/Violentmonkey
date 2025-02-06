@@ -80,6 +80,7 @@ export default {
     hideDisabled: '',
   },
   editor: defaultsEditor,
+  editorKeyMap: 'sublime',
   editorTheme: '',
   editorThemeName: null,
   editorWindow: false, // whether popup opens editor in a new window
